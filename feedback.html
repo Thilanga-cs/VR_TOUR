@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Portal - Share Your Thoughts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary: #4F46E5;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            margin: 0 auto;
+        }
+        
+        .visual-section {
+            position: relative;
+            background: linear-gradient(145deg, var(--primary) 0%, #818CF8 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .visual-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .feedback-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        
+        .feedback-icon i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        .visual-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .visual-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .visual-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .website-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .website-link {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .website-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .form-section {
+            padding: 50px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-header p {
+            color: #6B7280;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .rating-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .rating-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .rating-item.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .rating-item i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, var(--secondary), #34D399);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating-feedback {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            z-index: 1000;
+            animation: bounce 2s infinite;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .floating-feedback:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        .mobile-only {
+            display: none;
+        }
+        
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .visual-section {
+                padding: 30px;
+                text-align: center;
+            }
+            
+            .form-section {
+                padding: 30px;
+            }
+            
+            .form-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .website-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .website-link {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .rating-group {
+                flex-direction: column;
+            }
+            
+            .mobile-only {
+                display: block;
+            }
+            
+            .desktop-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Feedback Button -->
+    <div class="floating-feedback" onclick="scrollToForm()">
+        <i class="fas fa-comment-dots"></i>
+    </div>
+
+    <div class="container">
+        <!-- Visual Section -->
+        <div class="visual-section">
+            <div class="feedback-icon">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="visual-content">
+                <h2>Share Your Feedback</h2>
+                <p>Your opinion helps us improve and create better experiences. We value every suggestion and comment you share with us.</p>
+                
+                <div class="website-links">
+                    <a href="https://website1.com" class="website-link" target="_blank">
+                        <i class="fas fa-globe"></i>
+                        Website 1
+                    </a>
+                    <a href="https://website2.com" class="website-link" target="_blank">
+                        <i class="fas fa-store"></i>
+                        Website 2
+                    </a>
+                    <a href="https://website3.com" class="website-link" target="_blank">
+                        <i class="fas fa-blog"></i>
+                        Website 3
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-header">
+                <h1>Feedback Portal</h1>
+                <p>We'd love to hear your thoughts and suggestions</p>
+            </div>
+
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label class="form-label">Your Name</label>
+                    <input type="text" class="form-input" placeholder="Enter your name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" placeholder="your@email.com" required>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label class="form-label">Which website are you providing feedback for?</label>
+                    <select class="form-select" required>
+                        <option value="">Select a website</option>
+                        <option value="website1">Website 1</option>
+                        <option value="website2">Website 2</option>
+                        <option value="website3">Website 3</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div> -->
+
+                <div class="form-group">
+                    <label class="form-label">How would you rate your experience?</label>
+                    <div class="rating-group">
+                        <div class="rating-item" onclick="setRating(1)">
+                            <i class="fas fa-angry"></i>
+                            Poor
+                        </div>
+                        <div class="rating-item" onclick="setRating(2)">
+                            <i class="fas fa-frown"></i>
+                            Fair
+                        </div>
+                        <div class="rating-item" onclick="setRating(3)">
+                            <i class="fas fa-meh"></i>
+                            Good
+                        </div>
+                        <div class="rating-item" onclick="setRating(4)">
+                            <i class="fas fa-smile"></i>
+                            Very Good
+                        </div>
+                        <div class="rating-item" onclick="setRating(5)">
+                            <i class="fas fa-grin-stars"></i>
+                            Excellent
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Feedback</label>
+                    <textarea class="form-textarea" placeholder="Tell us what you think..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Suggestions for Improvement</label>
+                    <textarea class="form-textarea" placeholder="Any ideas to make it better?"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Feedback
+                </button>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 1.5rem; margin-bottom: 10px;">Thank You!</h3>
+                <p>Your feedback has been successfully submitted. We appreciate your time and insights!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentRating = 0;
+        
+        function setRating(rating) {
+            currentRating = rating;
+            const items = document.querySelectorAll('.rating-item');
+            items.forEach((item, index) => {
+                if (index + 1 <= rating) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        
+        function scrollToForm() {
+            document.getElementById('feedbackForm').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+        
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                this.reset();
+                setRating(0);
+                successMessage.style.display = 'none';
+                
+                // Show confetti animation
+                showConfetti();
+            }, 3000);
+        });
+        
+        function showConfetti() {
+            const confettiCount = 200;
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.borderRadius = '50%';
+                confetti.style.top = '50%';
+                confetti.style.left = '50%';
+                confetti.style.zIndex = '1000';
+                confetti.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`;
+                
+                const animation = confetti.animate([
+                    {
+                        transform: `translate(-50%, -50%) translateY(0) rotate(0deg)`,
+                        opacity: 1
+                    },
+                    {
+                        transform: `translate(-50%, -50%) translateY(-100px) translateX(${Math.random() * 200 - 100}px) rotate(${Math.random() * 360}deg)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: Math.random() * 2000 + 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+                
+                document.body.appendChild(confetti);
+            }
+        }
+        
+        // Add smooth animations to form inputs
+        const inputs = document.querySelectorAll('.form-input, .form-textarea, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.style.transform = 'translateY(-5px)';
+                input.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Add loading animation to submit button
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Feedback';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
